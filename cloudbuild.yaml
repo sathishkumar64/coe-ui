@@ -2,6 +2,6 @@ steps:
 - name: 'gcr.io/cloud-builders/mvn' 
   args: ['clean','install']
 - name: 'gcr.io/cloud-builders/docker' 
-  args: ['build', '-t', 'gcr.io/sapient-si-dsst-184990/coeuiservice', '.']
+  args: ['build', '-t', 'gcr.io/sapient-si-dsst-184990/coeuiservice:$REVISION_ID', '.']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/sapient-si-dsst-184990/coeuiservice:$BUILD_ID']
+  args: ['push', 'gcr.io/sapient-si-dsst-184990/coeuiservice:$REVISION_ID']
