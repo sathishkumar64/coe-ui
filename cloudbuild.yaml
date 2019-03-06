@@ -1,9 +1,7 @@
 steps:
-- name: 'gcr.io/cloud-builders/mvn'
-  dir : coe-ui/
+- name: 'gcr.io/cloud-builders/mvn' 
   args: ['clean','install']
-- name: 'gcr.io/cloud-builders/docker'
-  dir : coe-ui/
+- name: 'gcr.io/cloud-builders/docker' 
   args: ['build', '-t', 'gcr.io/sapient-si-dsst-184990/coeuiservice', '.']
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'gcr.io/sapient-si-dsst-184990/coeuiservice:latest']
