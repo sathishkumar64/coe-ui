@@ -11,7 +11,7 @@ steps:
   - image
   - deployment
   - coeuiservice-v1
-  - coeuiservice-v1 = gcr.io/$PROJECT_ID/coeuiservice:$BRANCH_NAME-$REVISION_ID
+  - coeuiservice=gcr.io/$PROJECT_ID/coeuiservice:$BRANCH_NAME-$REVISION_ID
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
   - 'CLOUDSDK_CONTAINER_CLUSTER=standard-cluster-1'
