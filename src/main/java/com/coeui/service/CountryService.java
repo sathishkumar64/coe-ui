@@ -1,7 +1,6 @@
 package com.coeui.service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,22 +10,18 @@ import org.springframework.stereotype.Service;
 
 import com.coeui.model.CountryInfo;
 
-@Service
+@Service("countryService")
 public class CountryService {
 	
 	
 	@Autowired
 	private GoogleZoneFinder googleZoneFinder;
 	
+	private static final Map<String, CountryInfo> map = new HashMap<String, CountryInfo>();
 	
 	
-	private static final Map<String, CountryInfo> map = Collections.unmodifiableMap(new HashMap<String, CountryInfo>() {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
 
-	{		   
+	static {		   
 		map.put("northamerica-northeast1", new CountryInfo("Montréal, Canada","https://upload.wikimedia.org/wikipedia/commons/d/d9/Flag_of_Canada_%28Pantone%29.svg"));
 		map.put("us-central1", new CountryInfo("Council Bluffs, Iowa, USA","https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"));
 		map.put("us-west1", new CountryInfo("The Dalles, Oregon, USA","https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"));
@@ -43,7 +38,7 @@ public class CountryService {
 		map.put("asia-northeast1", new CountryInfo("Tokyo, Japan", "https://upload.wikimedia.org/wikipedia/en/9/9e/Flag_of_Japan.svg"));
 		map.put("australia-southeast1", new CountryInfo("Sydney, Australia", "https://upload.wikimedia.org/wikipedia/en/b/b9/Flag_of_Australia.svg"));
 			
-	 }});
+	 };
 	
 	
 	
