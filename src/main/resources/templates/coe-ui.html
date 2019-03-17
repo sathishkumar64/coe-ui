@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+</head>
+<title>COE -Service</title>
+<body>
+	<h1>Welcome to COE Service</h1>
+	<a th:href="@{/swagger-ui.html}">Swagger Service</a>
+	<h3>Application has deployed on following Countries...</h3>
+
+	<table style="border: 1px solid black">
+		<tr>
+			<th>Country</th>
+			<th>Flag</th>
+		</tr>
+		<tr th:each="countryInfo : ${countryInfo}">
+			<td th:text="${countryInfo.location}" />
+			<td><img th:src="${countryInfo.flag}"
+				style="width: 300px; height: 200px; border: 1px solid black" /></td>
+		</tr>
+	</table>
+</body>
+</html>
