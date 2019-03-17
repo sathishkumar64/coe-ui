@@ -35,6 +35,7 @@ public class CountryService {
 		map.put("europe-west2", new CountryInfo("London, U.K.", "https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg"));
 		map.put("europe-west3",new CountryInfo("Frankfurt, Germany", "https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg"));
 		map.put("europe-west4", new CountryInfo("Eemshaven, Netherlands","https://upload.wikimedia.org/wikipedia/commons/2/20/Flag_of_the_Netherlands.svg"));
+		map.put("europe-north1", new CountryInfo("Zurich, Finland","https://upload.wikimedia.org/wikipedia/commons/b/bc/Flag_of_Finland.svg"));
 		map.put("asia-south1", new CountryInfo("Mumbai, India", "https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg"));
 		map.put("asia-southeast1", new CountryInfo("Jurong West, Singapore", "https://upload.wikimedia.org/wikipedia/commons/4/48/Flag_of_Singapore.svg"));
 		map.put("asia-east1", new CountryInfo("Changhua County, Taiwan","https://upload.wikimedia.org/wikipedia/commons/7/72/Flag_of_the_Republic_of_China.svg"));
