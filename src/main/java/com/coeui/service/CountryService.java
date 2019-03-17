@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,7 @@ import com.coeui.model.CountryInfo;
 @Service("countryService")
 public class CountryService {
 	
+	Logger logger = LoggerFactory.getLogger(this.getClass());	
 	
 	@Autowired
 	private GoogleZoneFinder googleZoneFinder;
@@ -51,16 +54,24 @@ public class CountryService {
 		
 		CountryInfo countryInfo =null;
 		
-		ArrayList<String> deployedZoneList =googleZoneFinder.printInstances();
+		ArrayList<String> deployedZoneList =googleZoneFinder.printInstances();	
+		
 		
 		for (String location : deployedZoneList) {
+			
+			
+			logger.info("location.....................................{}",location);
 			
 			flag=location.substring(0, location.lastIndexOf('-'));
 			
 			countryInfo=map.get(flag);
 			
+			logger.info("countryInfo.....................................{}",countryInfo);
+			
 			list.add(countryInfo);
 		}
+		
+		logger.info("getCountryInfo list size.....................................{}",list.size());
 	
 		return list;
 	}

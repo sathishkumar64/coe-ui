@@ -50,7 +50,10 @@ public class GoogleZoneFinder {
 
 		} catch (GeneralSecurityException | IOException e) {
 			logger.error("GoogleZoneFinder error......{}",e.getMessage());
-		}		
+		}
+		
+		logger.info("GoogleZoneFinder list size.....................................{}",list.size());
+		
 		return list;
 	}
 

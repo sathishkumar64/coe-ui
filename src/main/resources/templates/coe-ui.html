@@ -9,6 +9,8 @@
 	<a th:href="@{/swagger-ui.html}">Swagger Service</a>
 	<h3>Application has deployed on following Countries...</h3>
 
+	 <div th:if="${not #lists.isEmpty(countryInfo)}">
+
 	<table style="border: 1px solid black">
 		<tr>
 			<th>Country</th>
@@ -20,5 +22,7 @@
 				style="width: 300px; height: 200px; border: 1px solid black" /></td>
 		</tr>
 	</table>
+	
+	</div>
 </body>
 </html>
