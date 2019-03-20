@@ -1,5 +1,7 @@
 package com.coeui.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.coeui.model.CountryInfo;
 import com.coeui.model.School;
 import com.coeui.model.Student;
 
@@ -33,8 +36,9 @@ public class COEController {
 
 	
 	@RequestMapping(value="/")
-    public String notesList(Model model,@RequestHeader HttpHeaders headers) {
-        model.addAttribute("countryInfo", service.getDeployedCountryList(headers));
+    public String notesList(Model model,@RequestHeader HttpHeaders headers) {		
+		List<CountryInfo> countryInfoList=service.getDeployedCountryList(headers);
+        model.addAttribute("countryInfo", countryInfoList);
         return "coe-ui";
     }
 	
