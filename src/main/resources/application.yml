@@ -4,4 +4,4 @@ spring:
 
 logging:
   level:
-    com.coeui: INFO
+    com.coeui: DEBUG
