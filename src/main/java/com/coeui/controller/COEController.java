@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.coeui.model.School;
 import com.coeui.model.Student;
-import com.coeui.service.CountryService;
+
 import com.coeui.service.RestClientService;
 
 import io.swagger.annotations.Api;
@@ -30,12 +30,11 @@ public class COEController {
 	@Autowired
 	private RestClientService service;
 
-	@Autowired
-	private CountryService countryService;
+
 	
 	@RequestMapping(value="/")
-    public String notesList(Model model) {
-        model.addAttribute("countryInfo", countryService.getCountryInfo());
+    public String notesList(Model model,@RequestHeader HttpHeaders headers) {
+        model.addAttribute("countryInfo", service.getDeployedCountryList(headers));
         return "coe-ui";
     }
 	
