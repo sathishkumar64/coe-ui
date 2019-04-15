@@ -17,7 +17,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.coeui.model.CountryInfo;
 import com.coeui.model.School;
-import com.coeui.model.Student;
 
 @Service
 public class RestClientService {
@@ -84,23 +83,25 @@ public class RestClientService {
 	
 	/** --------------------- Student Service------------------ */
 
-	public List<Student> findAllStudent(HttpHeaders headers) {
-		logger.info("Fetching Studnet List from Student Service .......");		
-		HttpEntity<?> entity = new HttpEntity<>(headers);
-		ResponseEntity<List<Student>> response= restTemplate.exchange(remoteStudentURL + "/all", HttpMethod.GET, entity, new ParameterizedTypeReference<List<Student>>(){});
-		List<Student> students = response.getBody();		
-		return students;
-	}
-
-	public String getStudentsBySchoolName(String schoolName) {
-		logger.info("{}/getStudentDetailsForSchool/{}", remoteStudentURL, schoolName);
-		return restTemplate.getForObject(remoteStudentURL + "/getStudentDetailsForSchool/" + schoolName, String.class);
-	}
-
-	public String saveStudent(Student student) {
-		logger.info("Creating new student for this {}", student.getSchoolname());
-		return restTemplate.postForObject(remoteStudentURL + "/createstudent", student, String.class);
-	}
+	/*
+	 * public List<Student> findAllStudent(HttpHeaders headers) {
+	 * logger.info("Fetching Studnet List from Student Service .......");
+	 * HttpEntity<?> entity = new HttpEntity<>(headers);
+	 * ResponseEntity<List<Student>> response=
+	 * restTemplate.exchange(remoteStudentURL + "/all", HttpMethod.GET, entity, new
+	 * ParameterizedTypeReference<List<Student>>(){}); List<Student> students =
+	 * response.getBody(); return students; }
+	 * 
+	 * public String getStudentsBySchoolName(String schoolName) {
+	 * logger.info("{}/getStudentDetailsForSchool/{}", remoteStudentURL,
+	 * schoolName); return restTemplate.getForObject(remoteStudentURL +
+	 * "/getStudentDetailsForSchool/" + schoolName, String.class); }
+	 * 
+	 * public String saveStudent(Student student) {
+	 * logger.info("Creating new student for this {}", student.getSchoolname());
+	 * return restTemplate.postForObject(remoteStudentURL + "/createstudent",
+	 * student, String.class); }
+	 */
 
 	@Bean
 	public RestTemplate restTemplate() {
