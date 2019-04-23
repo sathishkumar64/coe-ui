@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.coeui.model.CountryInfo;
 import com.coeui.model.School;
+import com.coeui.model.Student;
+
 import com.coeui.service.RestClientService;
 
 import io.swagger.annotations.Api;
@@ -78,41 +80,28 @@ public class COEController {
 	/** --------------------- Student Service------------------ */
 	
 	
-	/*
-	 * @ApiOperation(value = "View a list of available student", response =
-	 * Iterable.class)
-	 * 
-	 * @ApiResponses(value = {
-	 * 
-	 * @ApiResponse(code = 200, message = "Successfully retrieved list"),
-	 * 
-	 * @ApiResponse(code = 401, message =
-	 * "You are not authorized to view the resource"),
-	 * 
-	 * @ApiResponse(code = 403, message =
-	 * "Accessing the resource you were trying to reach is forbidden"),
-	 * 
-	 * @ApiResponse(code = 404, message =
-	 * "The resource you were trying to reach is not found") })
-	 * 
-	 * @GetMapping(path="/api/v1/coe/student/all",produces =
-	 * MediaType.APPLICATION_JSON_VALUE) public @ResponseBody Iterable<Student>
-	 * findAllStudent(@RequestHeader HttpHeaders headers) { return
-	 * service.findAllStudent(headers); }
-	 * 
-	 * @ApiOperation(value = "Search a Student List with an School Name",response =
-	 * String.class)
-	 * 
-	 * @GetMapping(path="/api/v1/coe/student",produces =
-	 * MediaType.APPLICATION_JSON_VALUE) public @ResponseBody String
-	 * getStudentsBySchoolName(@RequestParam (value = "schoolName") String
-	 * schoolName) { return service.getStudentsBySchoolName(schoolName); }
-	 * 
-	 * @ApiOperation(value = "Add a new Student")
-	 * 
-	 * @PostMapping(path="/api/v1/coe/student" ) public @ResponseBody String
-	 * saveStudent (@RequestBody Student student) { return
-	 * service.saveStudent(student); }
-	 */
+	@ApiOperation(value = "View a list of available student", response = Iterable.class)
+	@ApiResponses(value = {
+	        @ApiResponse(code = 200, message = "Successfully retrieved list"),
+	        @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+	        @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+	        @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	})
+	@GetMapping(path="/api/v1/coe/student/all",produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Iterable<Student> findAllStudent(@RequestHeader HttpHeaders headers) {
+		return service.findAllStudent(headers);
+	}
+	
+	@ApiOperation(value = "Search a Student List with an School Name",response = String.class)
+	@GetMapping(path="/api/v1/coe/student",produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody String getStudentsBySchoolName(@RequestParam (value = "schoolName") String schoolName) {		
+		return service.getStudentsBySchoolName(schoolName);
+	}
+	
+	@ApiOperation(value = "Add a new Student")
+	@PostMapping(path="/api/v1/coe/student" )
+	public @ResponseBody String saveStudent (@RequestBody Student student) {		
+		return service.saveStudent(student);
+	}
 	
 }
