@@ -10,10 +10,3 @@ logging:
     file:    "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"
   file: /logs/coeuiservice.log 
   
-school:
-  api:
-    url: http://schoolservice.error:9098/api/school
-    
-student:
-   api: 
-     url: http://studentservice:8098/api/student
