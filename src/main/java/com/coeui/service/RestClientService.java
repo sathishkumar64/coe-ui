@@ -67,11 +67,14 @@ public class RestClientService {
 	
 
 	public List<School> findAllSchools(HttpHeaders headers) {
+		
+		
 		logger.info("Fetching School List from School Service.......");		
 		
 		logger.info("Fetching School List from School Service {}...remoteSchoolURL....",remoteSchoolURL);
 		
 		logger.info("Fetching School List from School Service {}...env....",env.getProperty("SCHOOL_API_URL"));
+		
 		
 		HttpEntity<?> entity = new HttpEntity<>(headers);
 		ResponseEntity<List<School>> response=null;
