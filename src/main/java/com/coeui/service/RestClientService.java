@@ -73,7 +73,12 @@ public class RestClientService {
 		
 		logger.info("Fetching School List from School Service {}...remoteSchoolURL.test...",remoteSchoolURL);
 		
-		logger.info("Fetching School List from School Service {}...env....",env.getProperty("SCHOOL_API_URL"));
+		String s=env.getProperty("SCHOOL_API_URL");
+		
+		System.out.println("s....................."+s);
+		System.out.println("remoteSchoolURL....................."+remoteSchoolURL);
+		
+		logger.info("Fetching School List from School Service {}...env....",s);
 		
 		
 		HttpEntity<?> entity = new HttpEntity<>(headers);
