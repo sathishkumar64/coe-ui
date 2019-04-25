@@ -12,7 +12,7 @@ logging:
   
 school:
   api:
-    url: http://schoolservice.test:9098/api/school
+    url: http://schoolservice.error:9098/api/school
     
 student:
    api: 
