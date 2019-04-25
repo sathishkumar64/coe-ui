@@ -32,10 +32,10 @@ public class RestClientService {
 	@Value("${utility.api.url:http://localhost:8082}")
 	private String remoteUtilityURL;	
 
-	@Value("${school.api.url:http://schoolservice:9098/api/school}")
+	@Value("${SCHOOL_API_URL}")
 	private String remoteSchoolURL;
 
-	@Value("${student.api.url:http://studentservice:8098/api/student}")
+	@Value("${STUDENT_API_URL}")
 	private String remoteStudentURL;
 	
 	
