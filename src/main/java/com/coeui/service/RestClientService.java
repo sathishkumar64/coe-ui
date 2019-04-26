@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -41,10 +40,7 @@ public class RestClientService {
 	
 	
 	/** --------------------- Utility Service------------------ */
-	@Autowired
-	private Environment env;
-	
-	
+
 	
 	public List<CountryInfo> getDeployedCountryList(HttpHeaders headers) {
 		logger.info("Fetching Deployed Country List from Utility Service.......");		
@@ -67,25 +63,7 @@ public class RestClientService {
 	
 
 	public List<School> findAllSchools(HttpHeaders headers) {
-		
-		
-		logger.info("Fetching School List from School Service.......");		
-		
-		
-		String s=env.getProperty("SCHOOL_API_URL");
-		
-		String s2=env.getProperty("school.api.url");
-		
-		String s1=System.getenv().getOrDefault("SCHOOL_API_URL", "Hi");
-		
-		System.out.println("s....................."+s);
-		System.out.println("s1....................."+s1);
-		System.out.println("s2....................."+s2);
-		System.out.println("remoteSchoolURL....................."+remoteSchoolURL);
-		
-	
-		
-		
+		logger.info("Fetching School List from School Service.......");	
 		HttpEntity<?> entity = new HttpEntity<>(headers);
 		ResponseEntity<List<School>> response=null;
 		try {
