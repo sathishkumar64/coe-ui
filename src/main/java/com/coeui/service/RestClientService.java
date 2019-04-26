@@ -33,10 +33,10 @@ public class RestClientService {
 	@Value("${utility.api.url:http://localhost:8082}")
 	private String remoteUtilityURL;	
 
-	@Value("${SCHOOL_API_URL}")
+	@Value("${school.api.url}")
 	private String remoteSchoolURL;
 
-	@Value("${STUDENT_API_URL}")
+	@Value("${student.api.url}")
 	private String remoteStudentURL;
 	
 	
@@ -74,10 +74,13 @@ public class RestClientService {
 		
 		String s=env.getProperty("SCHOOL_API_URL");
 		
+		String s2=env.getProperty("school.api.url");
+		
 		String s1=System.getenv().getOrDefault("SCHOOL_API_URL", "Hi");
 		
 		System.out.println("s....................."+s);
-		System.out.println("s....................."+s1);
+		System.out.println("s1....................."+s1);
+		System.out.println("s2....................."+s2);
 		System.out.println("remoteSchoolURL....................."+remoteSchoolURL);
 		
 	
