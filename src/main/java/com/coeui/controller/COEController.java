@@ -103,5 +103,5 @@ public class COEController {
 	public @ResponseBody String saveStudent (@RequestBody Student student) {		
 		return service.saveStudent(student);
 	}
-	
+	 
 }
