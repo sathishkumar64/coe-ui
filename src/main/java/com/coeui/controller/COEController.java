@@ -2,6 +2,8 @@ package com.coeui.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -18,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.coeui.model.CountryInfo;
 import com.coeui.model.School;
 import com.coeui.model.Student;
-
 import com.coeui.service.RestClientService;
 
 import io.swagger.annotations.Api;
@@ -29,6 +30,8 @@ import io.swagger.annotations.ApiResponses;
 @Api(value="COE-Istio Implementation", description="Operations pertaining to COE - School & Service")
 @Controller
 public class COEController {
+	
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	private RestClientService service;
@@ -36,12 +39,15 @@ public class COEController {
 
 	
 	@RequestMapping(value="/")
-    public String notesList(Model model,@RequestHeader HttpHeaders headers) {		
+    public String notesList(Model model,@RequestHeader HttpHeaders headers) {	
+		
+		System.out.println("Test::::::::::::::::::::");
 		List<CountryInfo> countryInfoList=service.getDeployedCountryList(headers);
-        model.addAttribute("countryInfo", countryInfoList);
+        model.addAttribute("countryInfo", countryInfoList);        
         return "coe-ui";
     }
 	
+		
 	
 	@ApiOperation(value = "View a list of available school", response = Iterable.class)
 	@ApiResponses(value = {
@@ -51,9 +57,44 @@ public class COEController {
 	        @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
 	})
 	@GetMapping(path="/api/v1/coe/school/all",produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Iterable<School> getAllSchool(@RequestHeader HttpHeaders headers) {		
-		return service.findAllSchools(headers);
+	public String  getAllSchool(Model model,@RequestHeader HttpHeaders headers) {	
+		List<School> schoolList= service.findAllSchools(headers);		       
+		model.addAttribute("schoolList", schoolList); 
+		return "get_all_school";
 	}
+	
+	
+	
+	  @GetMapping("/api/v1/coe/school")
+	  public String showSignUpForm(School school) {
+	        return "create_school";
+	 }
+	
+	
+	
+	@ApiOperation(value = "Add a new School")
+	@PostMapping(path="/createschool" )
+	public String saveSchool (Model model, School school,@RequestHeader HttpHeaders headers) {	
+		String status= service.saveSchool(school);	
+		logger.info("Create school Status.................: {}",status);		
+        model.addAttribute("schoolList", service.findAllSchools(headers));
+        return "get_all_school";
+	}
+	
+	
+	 @GetMapping("/api/v1/coe/school/getStudentsBySchool")
+	  public String showSearchForm(School school) {
+	        return "get_stu_school";
+	 }
+	
+	@ApiOperation(value = "Search a Student List with an School Name",response = String.class)
+	@PostMapping(path="/getStudentsBySchool",produces = MediaType.APPLICATION_JSON_VALUE)
+	public String getStudentsBySchool(Model model,School school,@RequestHeader HttpHeaders headers) {		
+		logger.info("Create school Status.................: {}",school.getSchoolname());
+		model.addAttribute("studentInfo", service.getStudentsBySchool(school.getSchoolname(),headers));
+		return "get_stu_school";
+	}
+	
 	
 	
 	@ApiOperation(value = "Search a school with an School Name",response = School.class)
@@ -62,17 +103,8 @@ public class COEController {
 		return service.findSchoolByName(schoolName);
 	}
 	
-	@ApiOperation(value = "Add a new School")
-	@PostMapping(path="/api/v1/coe/school" )
-	public @ResponseBody String saveSchool (@RequestBody School school) {		
-		return service.saveSchool(school);
-	}
 	
-	@ApiOperation(value = "Search a Student List with an School Name",response = String.class)
-	@GetMapping(path="/api/v1/coe/school/getStudentsBySchool",produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody String getStudentsBySchool(@RequestParam (value = "schoolName") String schoolName,@RequestHeader HttpHeaders headers) {		
-		return service.getStudentsBySchool(schoolName,headers);
-	}
+	
 	
 	
 		
@@ -88,20 +120,34 @@ public class COEController {
 	        @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
 	})
 	@GetMapping(path="/api/v1/coe/student/all",produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Iterable<Student> findAllStudent(@RequestHeader HttpHeaders headers) {
-		return service.findAllStudent(headers);
+	public String findAllStudent(Model model,@RequestHeader HttpHeaders headers) {
+		List<Student> studentList=service.findAllStudent(headers);
+		model.addAttribute("studentList", studentList); 
+		return "get_all_student";
 	}
+	
+	
+	
+	  @GetMapping("/api/v1/coe/student")
+	 public String showSignUpStudentForm(Student student) {
+	        return "create_student";
+	 }
+	
+	
+	@ApiOperation(value = "Add a new Student")
+	@PostMapping(path="/createstudent" )
+	public String saveStudent (Model model,Student student,@RequestHeader HttpHeaders headers) {		
+	service.saveStudent(student);
+	List<Student> studentList=service.findAllStudent(headers);
+	model.addAttribute("studentList", studentList); 
+		return "get_all_student";
+	}
+	
 	
 	@ApiOperation(value = "Search a Student List with an School Name",response = String.class)
 	@GetMapping(path="/api/v1/coe/student",produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody String getStudentsBySchoolName(@RequestParam (value = "schoolName") String schoolName) {		
 		return service.getStudentsBySchoolName(schoolName);
-	}
-	
-	@ApiOperation(value = "Add a new Student")
-	@PostMapping(path="/api/v1/coe/student" )
-	public @ResponseBody String saveStudent (@RequestBody Student student) {		
-		return service.saveStudent(student);
 	}
 	 
 }

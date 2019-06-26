@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.1.2.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
+
+
 	<groupId>com.coe-ui</groupId>
 	<artifactId>coe-ui</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -15,7 +20,9 @@
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
+		<keycloak.version>4.5.0.Final</keycloak.version>
 	</properties>
 
 	<dependencies>
@@ -24,7 +31,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -73,6 +80,9 @@
 			</exclusions>
 		</dependency>
 
+
+
+
 		<dependency>
 			<groupId>io.opentracing.contrib</groupId>
 			<artifactId>opentracing-spring-jaeger-cloud-starter</artifactId>
@@ -91,9 +101,43 @@
 			<version>0.32.0</version>
 		</dependency>
 
-		
 
+
+		<!-- Keycloak -->
+
+		<!-- <dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-spring-boot-2-starter</artifactId>
+			<version>4.0.0.Final</version>
+		</dependency> -->
+
+		
+		<!-- <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency> -->
+
+		<!-- Auth 0 -->
+
+
+
+		<!--  <dependency> <groupId>com.auth0</groupId> <artifactId>auth0-spring-security-api</artifactId> 
+			<version>1.2.1</version> </dependency> <dependency> <groupId>com.auth0</groupId> 
+			<artifactId>mvc-auth-commons</artifactId> <version>1.0.6</version> </dependency> -->
 	</dependencies>
+
+<!-- 	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.keycloak.bom</groupId>
+				<artifactId>keycloak-adapter-bom</artifactId>
+				<version>${keycloak.version}</version>
+				<version>3.3.0.Final</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement> -->
 
 	<build>
 		<plugins>
