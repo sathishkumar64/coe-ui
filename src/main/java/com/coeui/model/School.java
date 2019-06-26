@@ -13,6 +13,7 @@ public class School implements Serializable {
 	private String eduMode;
 	private Address address;
 
+	
 	public String getSchoolId() {
 		return schoolId;
 	}

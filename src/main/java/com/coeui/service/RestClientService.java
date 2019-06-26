@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.coeui.model.CountryInfo;
 import com.coeui.model.School;
+import com.coeui.model.SchoolAppData;
 import com.coeui.model.Student;
 
 @Service
@@ -97,13 +98,15 @@ public class RestClientService {
 	     }
 	}
 
-	public String getStudentsBySchool(String schoolName,HttpHeaders headers) {
+	public SchoolAppData getStudentsBySchool(String schoolName,HttpHeaders headers) {
 		logger.info("Sending Header Info from COE Service::::::::: {}",headers);	
 		logger.info("Getting Student List by School Name {}", schoolName);		
 		HttpEntity<?> entity = new HttpEntity<>(headers);
-		ResponseEntity<String> response= null;
+		ResponseEntity<SchoolAppData> response= null;
 		try {
-		 response= restTemplate.exchange(remoteSchoolURL + "/getStudentsBySchool/" + schoolName, HttpMethod.GET, entity, new ParameterizedTypeReference<String>(){});
+		 response= restTemplate.exchange(remoteSchoolURL + "/getStudentsBySchool/" + schoolName, HttpMethod.GET, entity, new ParameterizedTypeReference<SchoolAppData>(){});
+		 
+		 logger.info("Getting Student List by School Name response ..........{}", response);		
 		} catch (ResourceAccessException ex) {			
 			logger.error("ResourceAccessException.................: {}",ex.getLocalizedMessage());			
 	        throw new ResourceAccessException (ex.getLocalizedMessage());		       
