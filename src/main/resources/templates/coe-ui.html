@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+
+
 <head lang="en">
 		<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />	
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
@@ -45,9 +48,14 @@
 									<li><a th:href="@{'/api/v1/coe/student/all'}"><img src="images/st1.png" width="50%" height="50%"  alt="img07"/><span>Get All Student</span></a></li>
 									<li>
 									<a th:href="@{'/api/v1/coe/student'}">
-									<img src="images/st4.jpg" width="50%" height="50%"  alt="img08"/><span>Create Student</span></a></li>						
+									<img src="images/st4.jpg" width="50%" height="50%"  alt="img08"/><span>Create Student</span></a></li>								
+												
 								</ul>
 							</li>
+							
+							<li id="qsLogoutBtn"><a th:href="@{'/profile'}">Profile</a></li>			
+							
+							<li id="qsLogoutBtn"><a th:href="@{'/logout'}">Logout</a></li>			
 							
 						</ul>
 					</div>
@@ -57,13 +65,26 @@
 		<script src="js/cbpHorizontalSlideOutMenu.min.js"></script>
 		<script>
 			var menu = new cbpHorizontalSlideOutMenu( document.getElementById( 'cbp-hsmenu-wrapper' ) );
+			
+			
+			$("#qsLogoutBtn").click(function(e) {
+		        e.preventDefault();		  
+		        $("#password-login").removeClass("active");
+		        $("#qsLogoutBtn").addClass("active");
+		        // assumes we are not part of SSO so just logout of local session
+		        window.location = "${fn:replace(pageContext.request.requestURL, pageContext.request.requestURI, '')}/logout";
+		    });
 		</script>
 
 
 	
-<!-- 	<a th:href="@{/swagger-ui.html}">Swagger Service</a> -->
+	<a th:href="@{/swagger-ui.html}">Swagger Service</a> 
 	
 	
+	
+	<h3>Hello <td th:text="${userId}"/>!</h3>
+	
+
 	 
 	<h4>Application has deployed on following Countries...</h4>
 

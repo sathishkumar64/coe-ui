@@ -7,19 +7,22 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.coeui.model.CountryInfo;
 import com.coeui.model.School;
 import com.coeui.model.Student;
+import com.coeui.security.TokenAuthentication;
+import com.coeui.security.TokenUtils;
 import com.coeui.service.RestClientService;
 
 import io.swagger.annotations.Api;
@@ -38,10 +41,19 @@ public class COEController {
 
 
 	
-	@RequestMapping(value="/")
-    public String notesList(Model model,@RequestHeader HttpHeaders headers) {	
+	@RequestMapping(value="/home")
+    public String notesList(Model model,@RequestHeader HttpHeaders headers, final Authentication authentication) {			
 		
-		System.out.println("Test::::::::::::::::::::");
+		  TokenAuthentication tokenAuthentication = (TokenAuthentication) authentication;
+	        if (tokenAuthentication == null) {
+	            return "redirect:/login";
+	        }
+	        
+		    String profileJson = TokenUtils.claimsAsJson(tokenAuthentication.getClaims());
+	        model.addAttribute("profile", tokenAuthentication.getClaims());
+	        model.addAttribute("profileJson", profileJson);
+	        
+	        
 		List<CountryInfo> countryInfoList=service.getDeployedCountryList(headers);
         model.addAttribute("countryInfo", countryInfoList);        
         return "coe-ui";
@@ -57,7 +69,8 @@ public class COEController {
 	        @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
 	})
 	@GetMapping(path="/api/v1/coe/school/all",produces = MediaType.APPLICATION_JSON_VALUE)
-	public String  getAllSchool(Model model,@RequestHeader HttpHeaders headers) {	
+	public String  getAllSchool(Model model,@RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String  accesstoken) {		
+		headers.setBearerAuth(accesstoken);
 		List<School> schoolList= service.findAllSchools(headers);		       
 		model.addAttribute("schoolList", schoolList); 
 		return "get_all_school";
@@ -74,7 +87,8 @@ public class COEController {
 	
 	@ApiOperation(value = "Add a new School")
 	@PostMapping(path="/createschool" )
-	public String saveSchool (Model model, School school,@RequestHeader HttpHeaders headers) {	
+	public String saveSchool (Model model, School school,@RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String  accesstoken) {	
+		headers.setBearerAuth(accesstoken);
 		String status= service.saveSchool(school);	
 		logger.info("Create school Status.................: {}",status);		
         model.addAttribute("schoolList", service.findAllSchools(headers));
