@@ -103,7 +103,8 @@ public class COEController {
 	
 	@ApiOperation(value = "Search a Student List with an School Name",response = String.class)
 	@PostMapping(path="/getStudentsBySchool",produces = MediaType.APPLICATION_JSON_VALUE)
-	public String getStudentsBySchool(Model model,School school,@RequestHeader HttpHeaders headers) {		
+	public String getStudentsBySchool(Model model,School school,@RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String  accesstoken) {	
+		headers.setBearerAuth(accesstoken);
 		logger.info("Create school Status.................: {}",school.getSchoolname());
 		model.addAttribute("studentInfo", service.getStudentsBySchool(school.getSchoolname(),headers));
 		return "get_stu_school";
