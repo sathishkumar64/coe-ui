@@ -38,7 +38,7 @@ public class LoginController {
         String authorizeUrl = controller.buildAuthorizeUrl(req, redirectUri)
                // .withAudience(String.format("https://%s/userinfo", appConfig.getDomain()))
                 .withAudience(String.format("http://coe.demo.com/api/v1/coe/", appConfig.getDomain()))                
-                .withScope("openid profile read:school")
+                .withScope("openid profile read:school write:school read:getstudentbyschool")
                //.withScope("openid profile email")
                 .build();
         return "redirect:" + authorizeUrl;
