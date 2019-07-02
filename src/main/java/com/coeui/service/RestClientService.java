@@ -89,10 +89,13 @@ public class RestClientService {
 		 } 	
 	}
 
-	public String saveSchool(School school) {
+	public String saveSchool(School school,HttpHeaders headers) {
 		logger.info("Creating new school {}", school.getSchoolname());
 		try {	
-			return restTemplate.postForObject(remoteSchoolURL + "/create", school, String.class);
+			headers.set("Content-Type", "application/json");
+			HttpEntity<?> request = new HttpEntity<>(school,headers);
+			ResponseEntity<String> model = restTemplate.exchange(remoteSchoolURL + "/create", HttpMethod.POST, request, String.class);
+			return model.getStatusCode().toString();
 		} catch (ResourceAccessException ex) {
 	        throw new ResourceAccessException (ex.getLocalizedMessage());		       
 	     }
