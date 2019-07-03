@@ -42,13 +42,15 @@ public class COEController {
 
 	
 	@RequestMapping(value="/home")
-    public String notesList(Model model,@RequestHeader HttpHeaders headers, final Authentication authentication) {			
+    public String notesList(Model model,@RequestHeader HttpHeaders headers, final Authentication authentication,@SessionAttribute("x-api-key") String  apikey) {			
+		
+		 
 		
 		  TokenAuthentication tokenAuthentication = (TokenAuthentication) authentication;
 	        if (tokenAuthentication == null) {
 	            return "redirect:/login";
-	        }
-	        
+	        }	        
+	        headers.setBearerAuth(apikey);
 		    String profileJson = TokenUtils.claimsAsJson(tokenAuthentication.getClaims());
 	        model.addAttribute("profile", tokenAuthentication.getClaims());
 	        model.addAttribute("profileJson", profileJson);
@@ -69,8 +71,9 @@ public class COEController {
 	        @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
 	})
 	@GetMapping(path="/api/v1/coe/school/all",produces = MediaType.APPLICATION_JSON_VALUE)
-	public String  getAllSchool(Model model,@RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String  accesstoken) {		
+	public String  getAllSchool(Model model,@RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String accesstoken,@SessionAttribute("x-api-key") String  apikey) {		
 		headers.setBearerAuth(accesstoken);
+		 headers.setBearerAuth(apikey);
 		List<School> schoolList= service.findAllSchools(headers);		       
 		model.addAttribute("schoolList", schoolList); 
 		return "get_all_school";
@@ -87,8 +90,9 @@ public class COEController {
 	
 	@ApiOperation(value = "Add a new School")
 	@PostMapping(path="/createschool" )
-	public String saveSchool (Model model, School school,@RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String  accesstoken) {	
+	public String saveSchool (Model model, School school,@RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String  accesstoken,@SessionAttribute("x-api-key") String  apikey) {	
 		headers.setBearerAuth(accesstoken);
+		 headers.setBearerAuth(apikey);
 		String status= service.saveSchool(school,headers);	
 		logger.info("Create school Status.................: {}",status);		
         model.addAttribute("schoolList", service.findAllSchools(headers));
@@ -103,8 +107,9 @@ public class COEController {
 	
 	@ApiOperation(value = "Search a Student List with an School Name",response = String.class)
 	@PostMapping(path="/getStudentsBySchool",produces = MediaType.APPLICATION_JSON_VALUE)
-	public String getStudentsBySchool(Model model,School school,@RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String  accesstoken) {	
+	public String getStudentsBySchool(Model model,School school,@RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String  accesstoken,@SessionAttribute("x-api-key") String  apikey) {	
 		headers.setBearerAuth(accesstoken);
+		headers.setBearerAuth(apikey);
 		logger.info("Find school Status.................: {}",school.getSchoolname());
 		model.addAttribute("studentInfo", service.getStudentsBySchool(school.getSchoolname(),headers));
 		return "get_stu_school";

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,10 +25,16 @@ import com.coeui.security.TokenAuthentication;
 @Controller
 public class CallbackController {
 
+	
+	@Value(value = "${apikey}")
+	private String apikey;
+	
 	@Autowired
 	private AuthenticationController controller;
+	
 
 	private final String redirectOnFail;
+	
 	private final String redirectOnSuccess;
 
 	public CallbackController() {
@@ -56,6 +63,7 @@ public class CallbackController {
 			System.out.println("Id token:::::::::::" + tokens.getIdToken());
 
 			session.setAttribute("accesstoken", tokens.getAccessToken());
+			session.setAttribute("x-api-key",apikey);
 
 			TokenAuthentication tokenAuth = new TokenAuthentication(JWT.decode(tokens.getIdToken()));
 
