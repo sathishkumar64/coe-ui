@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -24,6 +26,8 @@ import com.coeui.security.TokenAuthentication;
 
 @Controller
 public class CallbackController {
+	
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	
 	@Value(value = "${apikey}")
@@ -57,10 +61,10 @@ public class CallbackController {
 	private void handle(HttpServletRequest req, HttpServletResponse res, HttpSession session) throws IOException {
 		try {
 			Tokens tokens = controller.handle(req);
-
-			System.out.println("Access token:::::::::::" + tokens.getAccessToken());
-
-			System.out.println("Id token:::::::::::" + tokens.getIdToken());
+			
+			logger.info("Access token {}:::::::::::",tokens.getAccessToken());
+			logger.info("Id token {}:::::::::::",tokens.getIdToken());
+			logger.info("Api key {}:::::::::::",apikey);
 
 			session.setAttribute("accesstoken", tokens.getAccessToken());
 			session.setAttribute("x-api-key",apikey);

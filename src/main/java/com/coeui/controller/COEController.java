@@ -43,14 +43,11 @@ public class COEController {
 	
 	@RequestMapping(value="/home")
     public String notesList(Model model,@RequestHeader HttpHeaders headers, final Authentication authentication,@SessionAttribute("x-api-key") String  apikey) {			
-		
-		 
-		
 		  TokenAuthentication tokenAuthentication = (TokenAuthentication) authentication;
 	        if (tokenAuthentication == null) {
 	            return "redirect:/login";
 	        }	        
-	        headers.setBearerAuth(apikey);
+	        headers.add("x-api-key", apikey);
 		    String profileJson = TokenUtils.claimsAsJson(tokenAuthentication.getClaims());
 	        model.addAttribute("profile", tokenAuthentication.getClaims());
 	        model.addAttribute("profileJson", profileJson);
@@ -73,7 +70,7 @@ public class COEController {
 	@GetMapping(path="/api/v1/coe/school/all",produces = MediaType.APPLICATION_JSON_VALUE)
 	public String  getAllSchool(Model model,@RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String accesstoken,@SessionAttribute("x-api-key") String  apikey) {		
 		headers.setBearerAuth(accesstoken);
-		 headers.setBearerAuth(apikey);
+		headers.add("x-api-key", apikey);
 		List<School> schoolList= service.findAllSchools(headers);		       
 		model.addAttribute("schoolList", schoolList); 
 		return "get_all_school";
@@ -92,7 +89,7 @@ public class COEController {
 	@PostMapping(path="/createschool" )
 	public String saveSchool (Model model, School school,@RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String  accesstoken,@SessionAttribute("x-api-key") String  apikey) {	
 		headers.setBearerAuth(accesstoken);
-		 headers.setBearerAuth(apikey);
+		headers.add("x-api-key", apikey);
 		String status= service.saveSchool(school,headers);	
 		logger.info("Create school Status.................: {}",status);		
         model.addAttribute("schoolList", service.findAllSchools(headers));
@@ -109,7 +106,7 @@ public class COEController {
 	@PostMapping(path="/getStudentsBySchool",produces = MediaType.APPLICATION_JSON_VALUE)
 	public String getStudentsBySchool(Model model,School school,@RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String  accesstoken,@SessionAttribute("x-api-key") String  apikey) {	
 		headers.setBearerAuth(accesstoken);
-		headers.setBearerAuth(apikey);
+		headers.add("x-api-key", apikey);
 		logger.info("Find school Status.................: {}",school.getSchoolname());
 		model.addAttribute("studentInfo", service.getStudentsBySchool(school.getSchoolname(),headers));
 		return "get_stu_school";
