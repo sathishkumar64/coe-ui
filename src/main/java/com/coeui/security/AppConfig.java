@@ -14,7 +14,6 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import com.auth0.AuthenticationController;
 import com.coeui.controller.LogoutController;
 
-@SuppressWarnings("unused")
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -53,9 +52,6 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-
-		System.out.println("Calls are coming here.............");
-
 		http.csrf().disable();
 		http.authorizeRequests().antMatchers("/callback", "/login", "/", "/*.png", "/css/**", "/js/**", "/images/**")
 				.permitAll().anyRequest().authenticated().and().logout().logoutSuccessHandler(logoutSuccessHandler())

@@ -25,12 +25,8 @@ import com.coeui.security.TokenAuthentication;
 import com.coeui.security.TokenUtils;
 import com.coeui.service.RestClientService;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 
-@Api(value="COE-Istio Implementation", description="Operations pertaining to COE - School & Service")
+
 @Controller
 public class COEController {
 	
@@ -60,13 +56,7 @@ public class COEController {
 	
 		
 	
-	@ApiOperation(value = "View a list of available school", response = Iterable.class)
-	@ApiResponses(value = {
-	        @ApiResponse(code = 200, message = "Successfully retrieved list"),
-	        @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-	        @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-	        @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
-	})
+
 	@GetMapping(path="/api/v1/coe/school/all",produces = MediaType.APPLICATION_JSON_VALUE)
 	public String  getAllSchool(Model model,@RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String accesstoken,@SessionAttribute("x-api-key") String  apikey) {		
 		headers.setBearerAuth(accesstoken);
@@ -85,7 +75,7 @@ public class COEController {
 	
 	
 	
-	@ApiOperation(value = "Add a new School")
+	
 	@PostMapping(path="/createschool" )
 	public String saveSchool (Model model, School school,@RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String  accesstoken,@SessionAttribute("x-api-key") String  apikey) {	
 		headers.setBearerAuth(accesstoken);
@@ -102,7 +92,7 @@ public class COEController {
 	        return "get_stu_school";
 	 }
 	
-	@ApiOperation(value = "Search a Student List with an School Name",response = String.class)
+	
 	@PostMapping(path="/getStudentsBySchool",produces = MediaType.APPLICATION_JSON_VALUE)
 	public String getStudentsBySchool(Model model,School school,@RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String  accesstoken,@SessionAttribute("x-api-key") String  apikey) {	
 		headers.setBearerAuth(accesstoken);
@@ -114,7 +104,7 @@ public class COEController {
 	
 	
 	
-	@ApiOperation(value = "Search a school with an School Name",response = School.class)
+	
 	@GetMapping(path="/api/v1/coe/school",produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody School findSchoolById(@RequestParam (value = "schoolName") String schoolName) {		
 		return service.findSchoolByName(schoolName);
@@ -129,13 +119,7 @@ public class COEController {
 	/** --------------------- Student Service------------------ */
 	
 	
-	@ApiOperation(value = "View a list of available student", response = Iterable.class)
-	@ApiResponses(value = {
-	        @ApiResponse(code = 200, message = "Successfully retrieved list"),
-	        @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-	        @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-	        @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
-	})
+	
 	@GetMapping(path="/api/v1/coe/student/all",produces = MediaType.APPLICATION_JSON_VALUE)
 	public String findAllStudent(Model model,@RequestHeader HttpHeaders headers) {
 		List<Student> studentList=service.findAllStudent(headers);
@@ -151,7 +135,7 @@ public class COEController {
 	 }
 	
 	
-	@ApiOperation(value = "Add a new Student")
+	
 	@PostMapping(path="/createstudent" )
 	public String saveStudent (Model model,Student student,@RequestHeader HttpHeaders headers) {		
 	service.saveStudent(student);
@@ -161,7 +145,7 @@ public class COEController {
 	}
 	
 	
-	@ApiOperation(value = "Search a Student List with an School Name",response = String.class)
+	
 	@GetMapping(path="/api/v1/coe/student",produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody String getStudentsBySchoolName(@RequestParam (value = "schoolName") String schoolName) {		
 		return service.getStudentsBySchoolName(schoolName);
