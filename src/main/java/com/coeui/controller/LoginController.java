@@ -29,12 +29,23 @@ public class LoginController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     protected String login(final HttpServletRequest req) {
         logger.debug("Performing login");
-        String redirectUri = req.getScheme() + "://" + req.getServerName();
+        
+     //   String redirectUri = req.getScheme() + "://" + req.getServerName();
+        
+        logger.info(" req.getScheme() {}:::::::::::", req.getScheme()); 
+        
+        String redirectUri =    "https://" + req.getServerName();
+        
+        logger.info("redirectUri::::::before {}::::::::::::::::",redirectUri);
+        
         if ((req.getScheme().equals("http") && req.getServerPort() != 80) || (req.getScheme().equals("https") && req.getServerPort() != 443)) {
             redirectUri += ":" + req.getServerPort();
         }
+        
         redirectUri += "/callback";
     
+        logger.info("redirectUri after {}::::::::::::::::",redirectUri);
+        
         String authorizeUrl = controller.buildAuthorizeUrl(req, redirectUri)
                // .withAudience(String.format("https://%s/userinfo", appConfig.getDomain()))
                 .withAudience(String.format("http://coe.demo.com/api/v1/coe/", appConfig.getDomain()))                
