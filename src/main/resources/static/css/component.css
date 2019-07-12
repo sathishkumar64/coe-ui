@@ -23,7 +23,7 @@
 
 /* 100% width bar for menu */
 .cbp-hsinner {
-	background: #255a5c;
+	background: #eff1f5;
 	position: relative;
 	z-index: 100;
 }
@@ -47,7 +47,7 @@
 
 /* Main menu link style */
 .cbp-hsmenu > li > a {
-	color: #fff;
+	color: #041433;
 	font-size: 1.2em;
 	line-height: 3em;
 	display: inline-block;

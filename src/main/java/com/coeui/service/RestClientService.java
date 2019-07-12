@@ -64,7 +64,7 @@ public class RestClientService {
 	
 
 	public List<School> findAllSchools(HttpHeaders headers) {
-		logger.info("Fetching School List from School Service.......");	
+		logger.info("Fetching School List from School Service {}.......",headers);	
 		HttpEntity<?> entity = new HttpEntity<>(headers);
 		ResponseEntity<List<School>> response=null;
 		try {
@@ -123,7 +123,7 @@ public class RestClientService {
 	/** --------------------- Student Service------------------ */
 
 	public List<Student> findAllStudent(HttpHeaders headers) {
-		logger.info("Fetching Student List from Student Service .......");		
+		logger.info("Fetching Student List from Student Service .......{}",headers);		
 		HttpEntity<?> entity = new HttpEntity<>(headers);
 		ResponseEntity<List<Student>> response=null;
 		try{

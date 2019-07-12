@@ -32,23 +32,23 @@
 					<div class="cbp-hsinner">
 						<ul class="cbp-hsmenu">
 							<li>
-								<a th:href="@{'/home'}">Home</a>							
+								<a th:href="@{'/'}">Home</a>								
 							</li>
 						
 							<li>
 								<a href="#">School's</a>
 								<ul class="cbp-hssubmenu">
-									<li><a th:href="@{'/api/v1/coe/school/all'}"><img src="../static/images/sc3.jpg"  th:src="@{/images/sc3.jpg}"  width="50%" height="50%" alt="img01"/><span>Get All School</span></a></li>
-									<li><a th:href="@{'/api/v1/coe/school'}"><img src="../static/images/sc1.png"  th:src="@{/images/sc1.png}"  width="50%" height="50%"  alt="img02"/><span>Create School</span></a></li>
-									<li><a th:href="@{'/api/v1/coe/school/getStudentsBySchool'}"><img src="../static/images/sc2.jpg"  th:src="@{/images/sc2.jpg}"  width="50%" height="50%"  alt="img03"/><span>Get Students By School</span></a></li>								
+									<li><a th:href="@{'/coe/school'}"><img src="../static/images/sc3.jpg"  th:src="@{/images/sc3.jpg}"  width="50%" height="50%" alt="img01"/><span>Get All School</span></a></li>
+									<li><a th:href="@{'/coe/school/create'}"><img src="../static/images/sc1.png"  th:src="@{/images/sc1.png}"  width="50%" height="50%"  alt="img02"/><span>Create School</span></a></li>
+									<li><a th:href="@{'/coe/school/getStudentsBySchool'}"><img src="../static/images/sc2.jpg"  th:src="@{/images/sc2.jpg}"  width="50%" height="50%"  alt="img03"/><span>Get Students By School</span></a></li>								
 								</ul>
 							</li>
 							<li>
 								<a href="#">Student's</a>
 								<ul class="cbp-hssubmenu cbp-hssub-rows">
-									<li><a th:href="@{'/api/v1/coe/student/all'}"><img  src="../static/images/st1.png"  th:src="@{/images/st1.png}" width="50%" height="50%"  alt="img07"/><span>Get All Student</span></a></li>
+									<li><a th:href="@{'/coe/student'}"><img  src="../static/images/st1.png"  th:src="@{/images/st1.png}" width="50%" height="50%"  alt="img07"/><span>Get All Student</span></a></li>
 									<li>
-									<a th:href="@{'/api/v1/coe/student'}">
+									<a th:href="@{'/coe/student/create'}">
 									<img  src="../static/images/st4.jpg"  th:src="@{/images/st4.jpg}" width="50%" height="50%"  alt="img08"/><span>Create Student</span></a></li>						
 								</ul>
 							</li>							
