@@ -48,7 +48,7 @@ public class COEController {
 
 	@GetMapping(path = "/coe/school", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String getAllSchool(Model model, @RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String accesstoken) {		
-		headers.setBearerAuth(accesstoken);
+		//headers.setBearerAuth(accesstoken);
 		List<School> schoolList = service.findAllSchools(headers);
 		model.addAttribute("schoolList", schoolList);
 		return "get_all_school";
@@ -62,7 +62,7 @@ public class COEController {
 	@PostMapping(path = "/createschool")
 	public String saveSchool(Model model, School school, @RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String accesstoken) {
 		String status = service.saveSchool(school, headers);
-		headers.setBearerAuth(accesstoken);
+		//headers.setBearerAuth(accesstoken);
 		logger.info("Create school Status.................: {}", status);
 		model.addAttribute("schoolList", service.findAllSchools(headers));
 		return "get_all_school";
@@ -75,7 +75,7 @@ public class COEController {
 
 	@PostMapping(path = "/getStudentsBySchool", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String getStudentsBySchool(Model model, School school, @RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String  accesstoken) {
-		headers.setBearerAuth(accesstoken);
+	//	headers.setBearerAuth(accesstoken);
 		logger.info("Find school Status.................: {}", school.getSchoolname());
 		model.addAttribute("studentInfo", service.getStudentsBySchool(school.getSchoolname(), headers));
 		return "get_stu_school";
