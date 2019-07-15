@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import com.coeui.model.CountryInfo;
 import com.coeui.model.School;
 import com.coeui.model.Student;
+import com.coeui.security.TokenAuthentication;
 import com.coeui.service.RestClientService;
 
 @Controller
@@ -31,8 +33,14 @@ public class COEController {
 	private RestClientService service;
 
 	@RequestMapping(value = "/")
-	public String notesList(Model model, @RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String accesstoken) {
-		headers.setBearerAuth(accesstoken);
+	public String notesList(Model model, @RequestHeader HttpHeaders headers, final Authentication authentication) {
+		
+		TokenAuthentication tokenAuthentication = (TokenAuthentication) authentication;
+        if (tokenAuthentication == null) {
+            return "redirect:/login";
+        }	 
+		
+		//headers.setBearerAuth(accesstoken);
 		List<CountryInfo> countryInfoList = service.getDeployedCountryList(headers);
 		model.addAttribute("countryInfo", countryInfoList);
 		return "index";

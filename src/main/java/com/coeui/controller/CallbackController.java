@@ -40,7 +40,7 @@ public class CallbackController {
 	private final String redirectOnSuccess;
 
 	public CallbackController() {
-		this.redirectOnFail = "/";
+		this.redirectOnFail = "/login";
 		this.redirectOnSuccess = "/";
 	}
 

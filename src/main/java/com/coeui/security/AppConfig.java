@@ -39,6 +39,10 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
 	@Value(value = "${com.auth0.clientSecret}")
 	private String clientSecret;
 
+	
+	
+	 @Value(value = "${auth0.apiAudience}")
+	 private String apiAudience;
 
 	@Bean
 	public LogoutSuccessHandler logoutSuccessHandler() {
@@ -54,8 +58,9 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 		http.authorizeRequests().antMatchers("/callback", "/login", "/", "/*.png", "/css/**", "/js/**", "/images/**")
-				.permitAll().anyRequest().authenticated().and().logout().logoutSuccessHandler(logoutSuccessHandler())
-				.permitAll();
+				.permitAll().anyRequest().authenticated()
+				.and().logout().logoutSuccessHandler(logoutSuccessHandler());
+				
 	}
 
 	public String getDomain() {
@@ -70,4 +75,13 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
 		return clientSecret;
 	}
 
+	public String getApiAudience() {
+		return apiAudience;
+	}
+
+	public void setApiAudience(String apiAudience) {
+		this.apiAudience = apiAudience;
+	}
+
+	
 }
