@@ -48,7 +48,7 @@ public class COEController {
 
 	@GetMapping(path = "/coe/school", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String getAllSchool(Model model, @RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String accesstoken) {		
-		//headers.setBearerAuth(accesstoken);
+		headers.setBearerAuth(accesstoken);
 		List<School> schoolList = service.findAllSchools(headers);
 		model.addAttribute("schoolList", schoolList);
 		return "get_all_school";
@@ -62,7 +62,7 @@ public class COEController {
 	@PostMapping(path = "/createschool")
 	public String saveSchool(Model model, School school, @RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String accesstoken) {
 		String status = service.saveSchool(school, headers);
-		//headers.setBearerAuth(accesstoken);
+		headers.setBearerAuth(accesstoken);
 		logger.info("Create school Status.................: {}", status);
 		model.addAttribute("schoolList", service.findAllSchools(headers));
 		return "get_all_school";
@@ -75,7 +75,7 @@ public class COEController {
 
 	@PostMapping(path = "/getStudentsBySchool", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String getStudentsBySchool(Model model, School school, @RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String  accesstoken) {
-	//	headers.setBearerAuth(accesstoken);
+		headers.setBearerAuth(accesstoken);
 		logger.info("Find school Status.................: {}", school.getSchoolname());
 		model.addAttribute("studentInfo", service.getStudentsBySchool(school.getSchoolname(), headers));
 		return "get_stu_school";
@@ -89,7 +89,8 @@ public class COEController {
 	/** --------------------- Student Service------------------ */
 
 	@GetMapping(path = "/coe/student", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String findAllStudent(Model model, @RequestHeader HttpHeaders headers) {
+	public String findAllStudent(Model model, @RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String accesstoken) {
+		headers.setBearerAuth(accesstoken);
 		List<Student> studentList = service.findAllStudent(headers);
 		model.addAttribute("studentList", studentList);
 		return "get_all_student";
@@ -101,7 +102,8 @@ public class COEController {
 	}
 
 	@PostMapping(path = "/createstudent")
-	public String saveStudent(Model model, Student student, @RequestHeader HttpHeaders headers) {
+	public String saveStudent(Model model, Student student, @RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String accesstoken) {
+		headers.setBearerAuth(accesstoken);
 		service.saveStudent(student);
 		List<Student> studentList = service.findAllStudent(headers);
 		model.addAttribute("studentList", studentList);
@@ -109,7 +111,7 @@ public class COEController {
 	}
 
 	@GetMapping(path = "/api/v1/coe/student", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody String getStudentsBySchoolName(@RequestParam(value = "schoolName") String schoolName) {
+	public @ResponseBody String getStudentsBySchoolName(@RequestParam(value = "schoolName") String schoolName) {		
 		return service.getStudentsBySchoolName(schoolName);
 	}
 
