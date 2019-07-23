@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,12 +15,10 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.coeui.model.CountryInfo;
 import com.coeui.model.School;
 import com.coeui.model.Student;
-import com.coeui.security.TokenAuthentication;
 import com.coeui.service.RestClientService;
 
 @Controller
@@ -33,22 +30,14 @@ public class COEController {
 	private RestClientService service;
 
 	@RequestMapping(value = "/")
-	public String notesList(Model model, @RequestHeader HttpHeaders headers, final Authentication authentication) {
-		
-		TokenAuthentication tokenAuthentication = (TokenAuthentication) authentication;
-        if (tokenAuthentication == null) {
-            return "redirect:/login";
-        }	 
-		
-		//headers.setBearerAuth(accesstoken);
+	public String notesList(Model model, @RequestHeader HttpHeaders headers) {
 		List<CountryInfo> countryInfoList = service.getDeployedCountryList(headers);
 		model.addAttribute("countryInfo", countryInfoList);
 		return "index";
 	}
 
 	@GetMapping(path = "/coe/school", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String getAllSchool(Model model, @RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String accesstoken) {		
-		headers.setBearerAuth(accesstoken);
+	public String getAllSchool(Model model, @RequestHeader HttpHeaders headers) {
 		List<School> schoolList = service.findAllSchools(headers);
 		model.addAttribute("schoolList", schoolList);
 		return "get_all_school";
@@ -60,9 +49,8 @@ public class COEController {
 	}
 
 	@PostMapping(path = "/createschool")
-	public String saveSchool(Model model, School school, @RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String accesstoken) {
-		String status = service.saveSchool(school, headers);
-		headers.setBearerAuth(accesstoken);
+	public String saveSchool(Model model, School school, @RequestHeader HttpHeaders headers) {
+		String status = service.saveSchool(school, headers);		
 		logger.info("Create school Status.................: {}", status);
 		model.addAttribute("schoolList", service.findAllSchools(headers));
 		return "get_all_school";
@@ -74,8 +62,7 @@ public class COEController {
 	}
 
 	@PostMapping(path = "/getStudentsBySchool", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String getStudentsBySchool(Model model, School school, @RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String  accesstoken) {
-		headers.setBearerAuth(accesstoken);
+	public String getStudentsBySchool(Model model, School school, @RequestHeader HttpHeaders headers) {
 		logger.info("Find school Status.................: {}", school.getSchoolname());
 		model.addAttribute("studentInfo", service.getStudentsBySchool(school.getSchoolname(), headers));
 		return "get_stu_school";
@@ -89,8 +76,7 @@ public class COEController {
 	/** --------------------- Student Service------------------ */
 
 	@GetMapping(path = "/coe/student", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String findAllStudent(Model model, @RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String accesstoken) {
-		headers.setBearerAuth(accesstoken);
+	public String findAllStudent(Model model, @RequestHeader HttpHeaders headers) {	
 		List<Student> studentList = service.findAllStudent(headers);
 		model.addAttribute("studentList", studentList);
 		return "get_all_student";
@@ -102,8 +88,7 @@ public class COEController {
 	}
 
 	@PostMapping(path = "/createstudent")
-	public String saveStudent(Model model, Student student, @RequestHeader HttpHeaders headers,@SessionAttribute("accesstoken") String accesstoken) {
-		headers.setBearerAuth(accesstoken);
+	public String saveStudent(Model model, Student student, @RequestHeader HttpHeaders headers) {	
 		service.saveStudent(student);
 		List<Student> studentList = service.findAllStudent(headers);
 		model.addAttribute("studentList", studentList);
