@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coeui.model.School;
+import com.coeui.model.SchoolAppData;
 import com.coeui.model.Student;
 import com.coeui.service.RestClientService;
 
@@ -45,19 +46,21 @@ public class COEController {
 	
 	@ApiOperation(value = "Search a school with an School Name",response = School.class)
 	@GetMapping(path="/school",produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody School findSchoolById(@RequestParam (value = "schoolName") String schoolName) {		
-		return service.findSchoolByName(schoolName);
+	public @ResponseBody School findSchoolById(@RequestParam (value = "schoolName") String schoolName) {	
+		School school=service.findSchoolByName(schoolName);
+		System.out.println(school.getSchoolname());
+		return school;
 	}
 	
 	@ApiOperation(value = "Add a new School")
 	@PostMapping(path="/school" )
-	public @ResponseBody String saveSchool (@RequestBody School school) {		
-		return service.saveSchool(school);
+	public @ResponseBody String saveSchool (@RequestBody School school, @RequestHeader HttpHeaders headers) {		
+		return service.saveSchool(school, headers);
 	}
 	
 	@ApiOperation(value = "Search a Student List with an School Name",response = String.class)
 	@GetMapping(path="/school/getStudentsBySchool",produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody String getStudentsBySchool(@RequestParam (value = "schoolName") String schoolName,@RequestHeader HttpHeaders headers) {		
+	public @ResponseBody SchoolAppData getStudentsBySchool(@RequestParam (value = "schoolName") String schoolName,@RequestHeader HttpHeaders headers) {		
 		return service.getStudentsBySchool(schoolName,headers);
 	}
 	

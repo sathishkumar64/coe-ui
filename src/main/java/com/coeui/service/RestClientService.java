@@ -13,9 +13,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import com.coeui.model.CountryInfo;
 import com.coeui.model.School;
+import com.coeui.model.SchoolAppData;
 import com.coeui.model.Student;
 
 @Service
@@ -25,55 +29,134 @@ public class RestClientService {
 
 	@Autowired
 	private RestTemplate restTemplate;
+	
+	@Value("${utility.api.url:http://localhost:8082}")
+	private String remoteUtilityURL;	
 
-	@Value("${school.api.url:http://schoolservice:9098/api/school}")
+	@Value("${school.api.url}")
 	private String remoteSchoolURL;
 
-	@Value("${student.api.url:http://studentservice:8098/api/student}")
+	@Value("${student.api.url}")
 	private String remoteStudentURL;
+	
+	
+	/** --------------------- Utility Service------------------ */
+
+	
+	public List<CountryInfo> getDeployedCountryList(HttpHeaders headers) {
+		logger.info("Fetching Deployed Country List from Utility Service.......");		
+		HttpEntity<?> entity = new HttpEntity<>(headers);
+		ResponseEntity<List<CountryInfo>> response=null;
+		 try {
+		      response= restTemplate.exchange(remoteUtilityURL + "/deployedCountryInfo", HttpMethod.GET, entity, new ParameterizedTypeReference<List<CountryInfo>>(){});
+	
+		 } catch (ResourceAccessException ex) {
+		        throw new ResourceAccessException (ex.getLocalizedMessage());		       
+		 }		
+		List<CountryInfo> countryInfoList = response.getBody();		
+		return countryInfoList;
+	}
+	
+		
+	
+	/** --------------------- School Service------------------ */
+	
+	
 
 	public List<School> findAllSchools(HttpHeaders headers) {
-		logger.info("Fetching School List from School Service.......");
-		HttpEntity<?> entity = new HttpEntity(headers);
-		ResponseEntity<List<School>> response= restTemplate.exchange(remoteSchoolURL + "/all", HttpMethod.GET, entity, new ParameterizedTypeReference<List<School>>(){});
+		logger.info("Fetching School List from School Service {}.......",headers);	
+		HttpEntity<?> entity = new HttpEntity<>(headers);
+		ResponseEntity<List<School>> response=null;
+		try {
+		  response= restTemplate.exchange(remoteSchoolURL + "/all", HttpMethod.GET, entity, new ParameterizedTypeReference<List<School>>(){});
+		 } catch (ResourceAccessException ex) {
+		        throw new ResourceAccessException (ex.getLocalizedMessage());		       
+		 }catch (HttpClientErrorException ex) {			
+		     throw new IllegalArgumentException (ex.getResponseBodyAsString());		       
+		 } 	
 		List<School> schools = response.getBody();		
 		return schools;
 	}
 
 	public School findSchoolByName(String schoolName) {
-		logger.info("{} ?schoolname= {}", remoteSchoolURL, schoolName);
-		return restTemplate.getForObject(remoteSchoolURL + "?schoolname=" + schoolName, School.class);
+		logger.info("{}?schoolname= {}", remoteSchoolURL, schoolName);
+		try {		
+		   return restTemplate.getForObject(remoteSchoolURL + "?schoolname=" + schoolName, School.class);
+		} catch (ResourceAccessException ex) {
+	        throw new ResourceAccessException (ex.getLocalizedMessage());		       
+	     }catch (HttpClientErrorException ex) {			
+		     throw new IllegalArgumentException (ex.getResponseBodyAsString());		       
+		 } 	
 	}
 
-	public String saveSchool(School school) {
+	public String saveSchool(School school,HttpHeaders headers) {
 		logger.info("Creating new school {}", school.getSchoolname());
-		return restTemplate.postForObject(remoteSchoolURL + "/create", school, String.class);
+		try {	
+			headers.set("Content-Type", "application/json");
+			HttpEntity<?> request = new HttpEntity<>(school,headers);
+			ResponseEntity<String> model = restTemplate.exchange(remoteSchoolURL + "/create", HttpMethod.POST, request, String.class);
+			return model.getStatusCode().toString();
+		} catch (ResourceAccessException ex) {
+	        throw new ResourceAccessException (ex.getLocalizedMessage());		       
+	     }
 	}
 
-	public String getStudentsBySchool(String schoolName,HttpHeaders headers) {
+	public SchoolAppData getStudentsBySchool(String schoolName,HttpHeaders headers) {
 		logger.info("Sending Header Info from COE Service::::::::: {}",headers);	
 		logger.info("Getting Student List by School Name {}", schoolName);		
-		HttpEntity<?> entity = new HttpEntity(headers);
-		ResponseEntity<String> response= restTemplate.exchange(remoteSchoolURL + "/getStudentsBySchool/" + schoolName, HttpMethod.GET, entity, new ParameterizedTypeReference<String>(){});
+		HttpEntity<?> entity = new HttpEntity<>(headers);
+		ResponseEntity<SchoolAppData> response= null;
+		try {
+		 response= restTemplate.exchange(remoteSchoolURL + "/getStudentsBySchool/" + schoolName, HttpMethod.GET, entity, new ParameterizedTypeReference<SchoolAppData>(){});
+		 
+		 logger.info("Getting Student List by School Name response ..........{}", response);		
+		} catch (ResourceAccessException ex) {			
+			logger.error("ResourceAccessException.................: {}",ex.getLocalizedMessage());			
+	        throw new ResourceAccessException (ex.getLocalizedMessage());		       
+	     }catch (HttpClientErrorException ex) {			
+		     throw new IllegalArgumentException (ex.getResponseBodyAsString());		       
+		 } 
 		return response.getBody();
 	}
+	
+	
+	/** --------------------- Student Service------------------ */
 
 	public List<Student> findAllStudent(HttpHeaders headers) {
-		logger.info("Fetching Studnet List from Student Service .......");		
-		HttpEntity<?> entity = new HttpEntity(headers);
-		ResponseEntity<List<Student>> response= restTemplate.exchange(remoteStudentURL + "/all", HttpMethod.GET, entity, new ParameterizedTypeReference<List<Student>>(){});
+		logger.info("Fetching Student List from Student Service .......{}",headers);		
+		HttpEntity<?> entity = new HttpEntity<>(headers);
+		ResponseEntity<List<Student>> response=null;
+		try{
+			 response= restTemplate.exchange(remoteStudentURL + "/all", HttpMethod.GET, entity, new ParameterizedTypeReference<List<Student>>(){});
+		} catch (ResourceAccessException ex) {
+	        throw new ResourceAccessException (ex.getLocalizedMessage());		       
+	     }catch (HttpClientErrorException ex) {			
+		     throw new IllegalArgumentException (ex.getResponseBodyAsString());		       
+		 } 		
 		List<Student> students = response.getBody();		
 		return students;
 	}
 
 	public String getStudentsBySchoolName(String schoolName) {
 		logger.info("{}/getStudentDetailsForSchool/{}", remoteStudentURL, schoolName);
-		return restTemplate.getForObject(remoteStudentURL + "/getStudentDetailsForSchool/" + schoolName, String.class);
+		try{
+			return restTemplate.getForObject(remoteStudentURL + "/getStudentDetailsForSchool/" + schoolName, String.class);
+		 } catch (ResourceAccessException ex) {
+	        throw new ResourceAccessException (ex.getLocalizedMessage());		       
+	     }catch (HttpClientErrorException ex) {			
+		     throw new IllegalArgumentException (ex.getResponseBodyAsString());		       
+		 } 	
 	}
 
 	public String saveStudent(Student student) {
 		logger.info("Creating new student for this {}", student.getSchoolname());
-		return restTemplate.postForObject(remoteStudentURL + "/createstudent", student, String.class);
+		try{
+			return restTemplate.postForObject(remoteStudentURL + "/createstudent", student, String.class);
+		} catch (ResourceAccessException ex) {
+	        throw new ResourceAccessException (ex.getLocalizedMessage());		       
+	    }catch (HttpClientErrorException ex) {			
+		     throw new IllegalArgumentException (ex.getResponseBodyAsString());		       
+		 } 	
 	}
 
 	@Bean
